@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1120">
+  <meta name="description" content="СЕРДЦА ВАЙФУ АУРА - русская idle-коллекция вайфу для браузера и Яндекс Игр.">
+  <title>СЕРДЦА ВАЙФУ АУРА</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <div class="ambient" aria-hidden="true">
+      <span class="ambient-grid"></span>
+      <span class="ambient-stars"></span>
+      <span class="ambient-petals ambient-petals-a"></span>
+      <span class="ambient-petals ambient-petals-b"></span>
+    </div>
+
+    <section class="overlay intro-overlay" id="introOverlay" aria-labelledby="introTitle" hidden>
+      <div class="overlay-panel intro-panel">
+        <div class="intro-story">
+          <p class="eyebrow">ПРОЛОГ АУРЫ</p>
+          <h2 id="introTitle">Шесть государств. Один альбом.</h2>
+          <p>
+            Когда Аура раскололась на шесть государств, каждая вайфу стала хранительницей своей звезды.
+            Твоя задача проста: вернуть связь между державами, собрать их в альбом и разбудить механизм Ауры.
+          </p>
+          <p>
+            На 50% коллекции включается автокликер. После этого альбом начинает фармить вместе с тобой.
+            Редкие вайфу приходят из закрытых государств, а самые сильные усиливают не только ауру, но и темп клика.
+          </p>
+        </div>
+        <div class="intro-actions">
+          <button class="nav-button primary" type="button" id="introStartButton">
+            <span class="button-icon">01</span>
+            <span><b>ВОЙТИ В АУРУ</b><small>Принять клятву и начать сбор</small></span>
+            <span class="button-arrow">&gt;</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <header class="topbar">
+      <div class="brand-mark" aria-label="СЕРДЦА ВАЙФУ АУРА">
+        <span class="brand-seal">WA</span>
+        <div>
+          <strong>СЕРДЦА ВАЙФУ АУРА</strong>
+          <small>аниме-алтарь и аура-фарм</small>
+        </div>
+      </div>
+
+      <div class="topbar-side">
+        <div class="player-pill" id="playerTag">Гость</div>
+        <div class="player-pill" id="clickBalance">0</div>
+        <div class="wallet" aria-live="polite">
+          <span class="wallet-icon">✦</span>
+          <span id="auraBalance">0</span>
+          <small>АУРА</small>
+        </div>
+      </div>
+    </header>
+
+    <main class="menu-layer" id="menuLayer">
+      <section class="menu-copy">
+        <p class="eyebrow">ЛУННЫЙ ПОТОК</p>
+        <h1>СЕРДЦА ВАЙФУ <span>АУРА</span></h1>
+        <p class="menu-intro">
+          Фарми ауру, прокачивай привязанность и собирай коллекцию вайфу, которая живёт дольше одного браузера.
+        </p>
+
+        <div class="collection-progress-card">
+          <div class="collection-progress-head">
+            <strong>Прогресс коллекции</strong>
+            <span id="collectionProgressText">0%</span>
+          </div>
+          <div class="collection-progress-bar"><span id="collectionProgressBar"></span></div>
+          <p id="collectionAutoText">Автокликер откроется на 50% коллекции.</p>
+        </div>
+
+        <nav class="main-nav" aria-label="Main menu">
+          <button class="nav-button primary" type="button" data-open="gameOverlay">
+            <span class="button-icon">GO</span>
+            <span><b>РЕЖИМ СВЯЗИ</b><small>Кликай, чтобы зарабатывать ауру с активной вайфу</small></span>
+            <span class="button-arrow">&gt;</span>
+          </button>
+          <button class="nav-button" type="button" data-open="collectionOverlay">
+            <span class="button-icon">ID</span>
+            <span><b>АЛЬБОМ ВАЙФУ</b><small id="collectionCountMenu">1 / 100 открыто</small></span>
+            <span class="button-arrow">&gt;</span>
+          </button>
+          <button class="nav-button" type="button" data-open="casesOverlay">
+            <span class="button-icon">W</span>
+            <span><b>БАННЕРЫ ЖЕЛАНИЙ</b><small>Призывай новых вайфу и аксессуары</small></span>
+          </button>
+          <button class="nav-button" type="button" data-open="accessoriesOverlay">
+            <span class="button-icon">AX</span>
+            <span><b>АКСЕССУАРЫ</b><small>Одевай предметы и усиливай статы</small></span>
+            <span class="button-arrow">&gt;</span>
+          </button>
+          <button class="nav-button" type="button" data-open="settingsOverlay">
+            <span class="button-icon">FX</span>
+            <span><b>НАСТРОЙКИ</b><small>Звук, движение, язык и сохранения</small></span>
+            <span class="button-arrow">&gt;</span>
+          </button>
+        </nav>
+      </section>
+
+      <section class="hero-area" aria-label="Активная вайфу">
+        <div class="hero-copy">
+          <div class="hero-status"><span></span> АКТИВНАЯ КАРТА</div>
+          <div class="hero-badges">
+            <span id="liveElement">ЛУНА</span>
+            <span id="liveNation">СОЛАРИЯ</span>
+          </div>
+          <div class="hero-switcher" role="tablist" aria-label="Переключение главной карточки">
+            <button class="hero-swap-button active" type="button" data-hero-view="active">АКТИВНАЯ</button>
+            <button class="hero-swap-button" type="button" data-hero-view="event">ИВЕНТ</button>
+          </div>
+        </div>
+
+        <article class="waifu-card live-card rarity-rare" id="liveCard" tabindex="0">
+          <div class="card-glow"></div>
+          <div class="card-sparkles" aria-hidden="true"></div>
+          <div class="portrait large has-image" id="livePortrait" aria-hidden="true">
+            <img class="portrait-image" id="livePortraitImg" alt="" aria-hidden="true" loading="eager" decoding="async">
+          </div>
+          <div class="card-vignette"></div>
+
+          <div class="character-data">
+            <div>
+              <p id="liveId">W-001</p>
+              <h2 id="liveName">Луна</h2>
+              <p class="character-title" id="liveTitle">Лунный мечтатель</p>
+            </div>
+            <span class="rarity-chip" id="liveRarity">ОБЫЧНЫЕ</span>
+          </div>
+
+          <p class="character-quote" id="liveQuote">"Останься рядом. Звёзды рядом с тобой мягче."</p>
+
+          <div class="card-stats">
+            <span>АУРА <b id="liveAuraStat">1</b></span>
+            <span>ХАРИЗМА <b id="liveClickStat">1</b></span>
+            <span>СУДЬБА <b id="liveComboStat">1</b></span>
+          </div>
+        </article>
+
+        <p class="hero-hint" id="heroHint">Карточка теперь светится и выглядит как витринный арт, без лишней тряски.</p>
+      </section>
+    </main>
+
+    <section class="overlay game-overlay" id="gameOverlay" aria-labelledby="gameTitle" hidden>
+      <div class="overlay-panel game-panel">
+        <header class="overlay-header">
+          <div>
+            <p class="eyebrow">ЦИКЛ СВЯЗИ И ФАРМА</p>
+            <h2 id="gameTitle">РЕЖИМ СВЯЗИ</h2>
+          </div>
+          <button class="exit-button" type="button" data-exit aria-label="Выйти из режима"><span>ВЫХОД</span></button>
+        </header>
+
+        <div class="game-content">
+          <div class="click-stage" id="clickStage">
+            <div class="combo-readout">
+              <small>ЦЕПЬ СЕРДЕЦ</small>
+              <strong id="comboValue">x1.00</strong>
+              <div class="combo-track"><span id="comboBar"></span></div>
+            </div>
+
+            <div class="aura-core" id="auraCore" role="button" tabindex="0" aria-label="Кликни, чтобы фармить ауру">
+              <div class="core-ring ring-a"></div>
+              <div class="core-ring ring-b"></div>
+              <div class="core-ring ring-c"></div>
+              <div class="core-glyph">A</div>
+              <span>КЛИКАЙ</span>
+            </div>
+
+            <div class="click-info">
+              <span>ЗА КЛИК <b id="tapPower">1</b></span>
+              <span>В СЕК <b id="idlePower">0</b></span>
+              <span>ВСЕГО КЛИКОВ <b id="sessionClicks">0</b></span>
+            </div>
+          </div>
+
+          <aside class="upgrade-panel">
+            <div class="active-mini" id="activeMini"></div>
+            <section class="world-panel" id="worldPanel" aria-label="Миры ауры">
+              <div class="world-panel-head">
+                <div>
+                  <p class="eyebrow">МИРЫ ФАРМА</p>
+                  <strong id="worldCurrentLabel">Мир 1 / 5</strong>
+                </div>
+                <span id="worldUnlockProgress">1 / 10</span>
+              </div>
+              <h3 id="worldCurrentWorld">Сад первого света</h3>
+              <p id="worldCurrentDesc">Стартовый мир. Фарм быстрый, но баннеры почти без сюрпризов.</p>
+              <div class="world-bonus" id="worldBonusLine">Бонус мира: аура x1.00, клик x1.00, афк x1.00</div>
+              <div class="world-case" id="worldCurrentCase">Баннер: Обычный баннер</div>
+              <div class="world-list" id="worldList"></div>
+            </section>
+            <h3>УЛУЧШЕНИЯ РОМАНА</h3>
+
+            <button class="upgrade-button" type="button" data-upgrade="click">
+              <span class="upgrade-icon">CP</span>
+              <span><b>Импульс харизмы</b><small>Уровень <i id="clickLevel">0</i></small></span>
+              <strong><i id="clickCost">25</i> A</strong>
+            </button>
+
+            <button class="upgrade-button" type="button" data-upgrade="idle">
+              <span class="upgrade-icon">IW</span>
+              <span><b>Шёпот отдыха</b><small>Уровень <i id="idleLevel">0</i></small></span>
+              <strong><i id="idleCost">40</i> A</strong>
+            </button>
+
+            <button class="upgrade-button" type="button" data-upgrade="combo">
+              <span class="upgrade-icon">FC</span>
+              <span><b>Цепь судьбы</b><small>Уровень <i id="comboLevel">0</i></small></span>
+              <strong><i id="comboCost">60</i> A</strong>
+            </button>
+
+            <div class="goals-panel" id="goalsPanel">
+              <h3>ЦЕЛИ ДНЯ</h3>
+              <div id="goalsList"></div>
+            </div>
+
+            <section class="mechanics-panel" id="eventPanel">
+              <div class="mechanics-head">
+                <p class="eyebrow">МИРОВОЙ ИВЕНТ</p>
+                <span id="eventTimer">00:00</span>
+              </div>
+              <h3 id="eventName">Фестиваль света</h3>
+              <p id="eventText">Аура и клики сияют ярче.</p>
+              <div class="mechanics-line" id="eventBonusLine"></div>
+              <div class="mechanics-line alt" id="activeBuffLine">Активный буст отсутствует</div>
+            </section>
+
+            <section class="mechanics-panel boss-panel" id="bossPanel">
+              <div class="mechanics-head">
+                <p class="eyebrow">БОСС МИРА</p>
+                <span id="bossTimer">00:00</span>
+              </div>
+              <h3 id="bossName">Ожидание босса</h3>
+              <p id="bossText">Следующий босс появится по таймеру.</p>
+              <div class="boss-bar"><span id="bossHpBar"></span></div>
+              <div class="mechanics-foot">
+                <small id="bossHpText">0 / 0</small>
+                <button id="bossAttackButton" type="button">АТАКОВАТЬ</button>
+              </div>
+              <div class="mechanics-line" id="bossRewardLine">Босс отдыхает</div>
+            </section>
+
+            <section class="mechanics-panel" id="contractPanel">
+              <div class="mechanics-head">
+                <p class="eyebrow">ЕЖЕДНЕВНЫЕ КОНТРАКТЫ</p>
+                <span>3 задания</span>
+              </div>
+              <div id="contractList"></div>
+            </section>
+
+            <section class="mechanics-panel" id="expeditionPanel">
+              <div class="mechanics-head">
+                <p class="eyebrow">ЭКСПЕДИЦИИ</p>
+                <span>Долгий фарм</span>
+              </div>
+              <div id="expeditionList"></div>
+            </section>
+
+            <section class="mechanics-panel" id="lorePanel">
+              <div class="mechanics-head">
+                <p class="eyebrow">ЛОР</p>
+                <span>По прогрессу</span>
+              </div>
+              <h3 id="loreTitle">Пролог</h3>
+              <p id="loreText">Аура раскололась на шесть государств, и каждая вайфу хранит часть её сердца.</p>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="overlay" id="collectionOverlay" aria-labelledby="collectionTitle" hidden>
+      <div class="overlay-panel collection-panel">
+        <header class="overlay-header">
+          <div>
+            <p class="eyebrow">ЗВЁЗДНЫЙ АЛЬБОМ</p>
+            <h2 id="collectionTitle">АЛЬБОМ ВАЙФУ <span id="collectionCount">1 / 100</span></h2>
+          </div>
+          <button class="exit-button" type="button" data-exit aria-label="Выйти из альбома"><span>ВЫХОД</span></button>
+        </header>
+
+        <section class="collection-showcase" id="collectionShowcase" aria-label="Выбранная вайфу">
+          <div class="collection-showcase-copy">
+            <p class="eyebrow">ВЫБРАННАЯ КАРТА</p>
+            <h3 id="collectionShowcaseName">Луна</h3>
+            <p id="collectionShowcaseTitle">Лунный мечтатель | СОЛАРИЯ</p>
+            <p class="collection-showcase-quote" id="collectionShowcaseQuote">"Останься рядом. Звёзды рядом с тобой мягче."</p>
+            <div class="collection-showcase-meta">
+              <span id="collectionShowcaseRarity">ОБЫЧНЫЕ</span>
+              <span id="collectionShowcaseElement">ЛУНА</span>
+              <span id="collectionShowcaseStatus">АКТИВНАЯ</span>
+            </div>
+          </div>
+          <div class="collection-showcase-portrait rarity-rare" id="collectionShowcasePortrait">
+            <div class="collection-showcase-frame">
+              <img class="collection-showcase-image" id="collectionShowcaseImage" alt="" aria-hidden="true">
+            </div>
+          </div>
+        </section>
+
+        <div class="collection-toolbar">
+          <div class="filter-row collection-tab-row" role="tablist" aria-label="Вкладки альбома">
+            <button class="filter active" type="button" data-collection-tab="all">ВСЕ</button>
+            <button class="filter" type="button" data-collection-tab="regular">ВАЙФУ</button>
+            <button class="filter" type="button" data-collection-tab="event">ИВЕНТ</button>
+          </div>
+
+          <div class="filter-row status-row" role="group" aria-label="Фильтр по владению">
+            <button class="filter active" type="button" data-status-filter="All">ВСЕ</button>
+            <button class="filter" type="button" data-status-filter="Owned">ОТКРЫТЫЕ</button>
+            <button class="filter" type="button" data-status-filter="Locked">ЗАКРЫТЫЕ</button>
+          </div>
+
+          <div class="collection-pager" aria-label="Страницы альбома">
+            <button class="pager-button" type="button" id="collectionPrevPage">НАЗАД</button>
+            <div class="pager-readout">
+              <strong id="collectionPageLabel">СТРАНИЦА 1 / 1</strong>
+              <small id="collectionPageCount">0 КАРТОЧЕК</small>
+            </div>
+            <button class="pager-button" type="button" id="collectionNextPage">ВПЕРЁД</button>
+          </div>
+        </div>
+
+        <div class="filter-row" role="group" aria-label="Фильтр по редкости">
+          <button class="filter active" type="button" data-filter="All">ВСЕ</button>
+          <button class="filter" type="button" data-filter="Common">ОБЫЧНЫЕ</button>
+          <button class="filter" type="button" data-filter="Rare">РЕДКИЕ</button>
+          <button class="filter" type="button" data-filter="Epic">ЭПИЧЕСКИЕ</button>
+          <button class="filter" type="button" data-filter="Mythic">МИФИЧЕСКИЕ</button>
+          <button class="filter" type="button" data-filter="Ultra">УЛЬТРАРЕДКИЕ</button>
+          <button class="filter" type="button" data-filter="Event">ИВЕНТОВЫЕ</button>
+        </div>
+
+        <div class="collection-grid" id="collectionGrid"></div>
+      </div>
+    </section>
+
+    <section class="overlay" id="casesOverlay" aria-labelledby="casesTitle" hidden>
+      <div class="overlay-panel cases-panel">
+        <header class="overlay-header">
+          <div>
+            <p class="eyebrow">ПРИЗЫВ СОЗВЕЗДИЙ</p>
+            <h2 id="casesTitle">БАННЕРЫ ЖЕЛАНИЙ</h2>
+          </div>
+          <button class="exit-button" type="button" data-exit aria-label="Выйти из баннеров"><span>ВЫХОД</span></button>
+        </header>
+
+        <div class="case-room">
+          <div class="case-display" id="caseDisplay">
+            <div class="case-halo"></div>
+            <div class="case-box">
+              <img class="case-art" id="caseArt" alt="" aria-hidden="true" />
+              <span class="case-lock">WA</span>
+              <i></i><i></i><i></i>
+            </div>
+            <div class="case-copy">
+              <p id="bannerName">СТАНДАРТНЫЙ БАННЕР</p>
+              <h3 id="bannerSubtitle">Одна случайная вайфу</h3>
+              <span id="bannerReward">Дубликат: возврат ауры</span>
+              <div class="case-progress" id="eventCaseProgress" hidden>
+                <div class="case-progress-head">
+                  <small>ГАРАНТ ИВЕНТА</small>
+                  <span id="eventCaseProgressText">0 / 100</span>
+                </div>
+                <div class="case-progress-bar"><span id="eventCaseProgressFill"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="drop-result" id="dropResult" hidden></div>
+
+          <div class="banner-row" id="bannerRow"></div>
+
+          <div class="open-actions">
+            <button class="open-case-button" id="openCaseButton" type="button">
+              <span>ОТКРЫТЬ 1</span>
+              <strong>100 A</strong>
+            </button>
+            <button class="open-case-button secondary" id="openFiveCaseButton" type="button">
+              <span>ОТКРЫТЬ 5</span>
+              <strong>ПАК</strong>
+            </button>
+          </div>
+
+          <p class="case-odds" id="caseOdds">ОБЫЧНЫЕ 78% | РЕДКИЕ 15% | ЭПИЧЕСКИЕ 5% | МИФИЧЕСКИЕ 1.5% | УЛЬТРАРЕДКИЕ 0.5%</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="overlay" id="accessoriesOverlay" aria-labelledby="accessoriesTitle" hidden>
+      <div class="overlay-panel accessories-panel">
+        <header class="overlay-header">
+          <div>
+            <p class="eyebrow">ТЮНИНГ ВАЙФУ</p>
+            <h2 id="accessoriesTitle">АКСЕССУАРЫ</h2>
+          </div>
+          <button class="exit-button" type="button" data-exit aria-label="Выйти из аксессуаров"><span>ВЫХОД</span></button>
+        </header>
+
+        <div class="accessories-wrap">
+          <aside class="equipped-panel">
+            <p class="eyebrow">ЭКИПИРОВКА</p>
+            <div id="equippedList"></div>
+            <div class="stats-summary" id="accessoryStatsSummary"></div>
+          </aside>
+          <div class="accessories-grid" id="accessoriesGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="overlay" id="settingsOverlay" aria-labelledby="settingsTitle" hidden>
+      <div class="overlay-panel settings-panel">
+        <header class="overlay-header">
+          <div>
+            <p class="eyebrow">КОНТРОЛЬ АЛТАРЯ</p>
+            <h2 id="settingsTitle">НАСТРОЙКИ</h2>
+          </div>
+          <button class="exit-button" type="button" data-exit aria-label="Выйти из настроек"><span>ВЫХОД</span></button>
+        </header>
+
+        <div class="settings-list">
+          <label class="setting-row">
+            <span><b>Звук</b><small>Клики, баннеры и интерфейс</small></span>
+            <input type="checkbox" id="soundToggle" checked>
+            <i class="toggle"></i>
+          </label>
+
+          <label class="setting-row">
+            <span><b>Пониженное движение</b><small>Убирает лишние анимации и вспышки</small></span>
+            <input type="checkbox" id="motionToggle">
+            <i class="toggle"></i>
+          </label>
+
+          <label class="setting-row">
+            <span><b>Язык</b><small>Русский или английский интерфейс</small></span>
+            <select id="languageSelect" class="language-select">
+              <option value="ru">Русский</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+
+          <div class="setting-row static-row">
+            <span><b>Сохранение</b><small>Яндекс-сейв, если доступен, иначе локально</small></span>
+            <strong id="saveStatus">СОХРАНЕНИЕ НА УСТРОЙСТВЕ</strong>
+          </div>
+
+          <button class="danger-button" type="button" id="resetButton">СБРОСИТЬ ПРОГРЕСС</button>
+        </div>
+
+        <p class="version">СБОРКА 4.0.0 | HTML5 + YANDEX FALLBACK</p>
+      </div>
+    </section>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
